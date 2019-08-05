@@ -205,7 +205,7 @@ def encode_str(s):
 
 
 
-# @njit('uint32[:](uint32[:,:],uint32[:,:])', nopython=True, nogil=True, parallel=True)
+@njit('uint32[:](uint32[:,:],uint32[:,:])', nopython=True, nogil=True, parallel=True)
 # @guvectorize([(uint32[:,:], uint32[:])], '(n,d)->(n)', nopython=True)
 def test_curry(str_list_a,str_list_b):
 	return str_len(concatenate(str_list_a,str_list_b))
@@ -262,6 +262,7 @@ rand = (np.random.random((3,n))*1000).view(np.uint32).reshape(3,-1)
 timefunc(None,"concatenate-random",concatenate,rand,rand)
 timefunc(None,"concatenate-left",concatenate,decode_str("fooperz "),s_list)
 timefunc(None,"concatenate-right",concatenate,s_list,decode_str("fooperz "))
+timefunc(None,"test_curry",test_curry,s_list,decode_str("fooperz "))
 
 d = np.array(['AaBc%$@ ','snAkE123 ','pateblxyzZ ']*n)
 # timefunc(None,"concatenate-numpy",np.char.add,d,d)
